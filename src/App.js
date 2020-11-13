@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {FormControl,MenuItem,Select} from "@material-ui/core";
+import {Card, CardContent, FormControl,MenuItem,Select} from "@material-ui/core";
 
 import './App.css';
 import InfoBox from "./components/InfoBox";
+import Map from "./components/Map";
 
 
 function App() {
@@ -17,13 +18,18 @@ function App() {
        fetch("https://disease.sh/v3/covid-19/countries")
       .then((response)=>response.json())
       .then((data)=>{
-        const countries = data.map((country)=>({
+    
+        const countries = data.filter(newData=>newData.countryInfo._id !== null).map((country)=>({
           name: country.country,
-          value: country.countryInfo.iso2
+          value: country.countryInfo.iso2,
+          id: country.countryInfo._id
         }))
         setCountries(countries);
       })
   },[]);
+
+
+  
 
  const onCountryChange =  (e)=>{
    const countryCode = e.target.value;
@@ -31,7 +37,9 @@ function App() {
  }
 
   return (
+    
     <div className="app">
+    <div className="app__left">
     <div className="app__header">
     <h1>COVID-19 TRACKER</h1>
      <FormControl className="app__dropdown">
@@ -39,7 +47,9 @@ function App() {
        <MenuItem value="worldwide">WorldWide</MenuItem>
        {
          countries.map((country)=>(
-          <MenuItem value={country.value}>{country.name}</MenuItem>
+          
+          <MenuItem key={country.id}  value={country.value}>{country.name}</MenuItem>
+        
          ))
        }
      </Select>
@@ -52,7 +62,15 @@ function App() {
        <InfoBox title="Recovered" total={12} cases={54} />
        <InfoBox title="Deaths" total={4} cases={12} />
     </div>
-       
+       <Map />
+    </div>
+    <Card className="app__right">
+      <CardContent>
+        <h3>Live Cases By Country</h3>
+        <h3>WorldWide New Cases</h3>
+      </CardContent>
+    </Card>
+   
     </div>
   );
 }
