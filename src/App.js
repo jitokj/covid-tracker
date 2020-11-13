@@ -2,13 +2,17 @@ import React, { useEffect, useState } from "react";
 import {FormControl,MenuItem,Select} from "@material-ui/core";
 
 import './App.css';
+import InfoBox from "./components/InfoBox";
 
 
 function App() {
 
+  /* state */
   const [countries,setCountries] = useState([]);
   const [country,setCountry] = useState("worldwide");
 
+
+/* fetching cuntries list from disease.sh api */
   useEffect(()=>{
        fetch("https://disease.sh/v3/covid-19/countries")
       .then((response)=>response.json())
@@ -36,16 +40,19 @@ function App() {
        {
          countries.map((country)=>(
           <MenuItem value={country.value}>{country.name}</MenuItem>
-     
          ))
        }
-     
-        
-       </Select>
+     </Select>
      </FormControl>
 
     </div>
-    
+
+    <div className="app__stats">
+    <InfoBox title="CoronaVirus Cases" total={200} cases={123}  />
+       <InfoBox title="Recovered" total={12} cases={54} />
+       <InfoBox title="Deaths" total={4} cases={12} />
+    </div>
+       
     </div>
   );
 }
