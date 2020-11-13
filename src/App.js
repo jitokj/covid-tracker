@@ -6,6 +6,7 @@ import InfoBox from "./components/InfoBox";
 import Map from "./components/Map";
 import Table from "./components/Table";
 import {sortData} from "./helper/util";
+import LineGraph from "./components/LineGraph";
 
 
 
@@ -89,7 +90,7 @@ function App() {
 
        <InfoBox title="Recovered"
         total={countryInfo.recovered} 
-        cases={countryInfo.Recovered} />
+        cases={countryInfo.todayRecovered} />
 
        <InfoBox title="Deaths" 
        total={countryInfo.deaths}
@@ -103,6 +104,7 @@ function App() {
         <h3>Live Cases By Country</h3>
         <Table countries={tableData} />
         <h3>WorldWide New Cases</h3>
+        <LineGraph />
       </CardContent>
     </Card>
    
