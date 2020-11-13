@@ -5,6 +5,7 @@ import './App.css';
 import InfoBox from "./components/InfoBox";
 import Map from "./components/Map";
 import Table from "./components/Table";
+import {sortData} from "./helper/util";
 
 
 
@@ -18,7 +19,7 @@ function App() {
 
 
 /* fetching cuntries list from disease.sh api */
-  useEffect(()=>{
+  useEffect( ()=>{
        fetch("https://disease.sh/v3/covid-19/countries")
       .then((response)=>response.json())
       .then((data)=>{
@@ -28,7 +29,9 @@ function App() {
           value: country.countryInfo.iso2,
           id: country.countryInfo._id
         }))
-        setTableData(data);
+        const sortedData = sortData(data);
+      
+        setTableData(sortedData);
         setCountries(countries);
       })
   },[]);
