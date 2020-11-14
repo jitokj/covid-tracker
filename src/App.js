@@ -7,6 +7,7 @@ import Map from "./components/Map";
 import Table from "./components/Table";
 import {sortData} from "./helper/util";
 import LineGraph from "./components/LineGraph";
+import "leaflet/dist/leaflet.css";
 
 
 
@@ -17,6 +18,8 @@ function App() {
   const [country,setCountry] = useState("worldwide");
   const [countryInfo,setCountryInfo] = useState({});
   const [tableData,setTableData] = useState([]);
+  const [mapCenter,setMapCenter] = useState([34.80746,-40.4796]);
+  const [mapZoom,setMapZoom] = useState(3);
 
 
 /* fetching cuntries list from disease.sh api */
@@ -46,16 +49,19 @@ function App() {
     })
   },[]);
 
-  
+ 
 
- const onCountryChange =  (e)=>{
+ const onCountryChange =  async (e)=>{
+   e.preventDefault();
    const countryCode = e.target.value;
    
    const url = countryCode === 'worldwide' ? "https://disease.sh/v3/covid-19/all" 
           : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
-         fetch(url)
+        await fetch(url)
             .then(response=>response.json())
             .then(data=>{
+              setMapCenter([data.countryInfo.lat,data.countryInfo.long]);
+              setMapZoom(4);
               setCountry(countryCode);
               setCountryInfo(data);
             })
@@ -97,7 +103,7 @@ function App() {
         cases={countryInfo.todayDeaths} />
 
     </div>
-       <Map />
+       <Map center={mapCenter} zoom={mapZoom} />
     </div>
     <Card className="app__right">
       <CardContent>
