@@ -20,6 +20,7 @@ function App() {
   const [tableData,setTableData] = useState([]);
   const [mapCenter,setMapCenter] = useState([34.80746,-40.4796]);
   const [mapZoom,setMapZoom] = useState(3);
+  const [mapCountries,setMapCountries] = useState([]);
 
 
 /* fetching cuntries list from disease.sh api */
@@ -27,14 +28,14 @@ function App() {
        fetch("https://disease.sh/v3/covid-19/countries")
       .then((response)=>response.json())
       .then((data)=>{
-    
+       console.log(data);
         const countries = data.filter(newData=>newData.countryInfo._id !== null).map((country)=>({
           name: country.country,
           value: country.countryInfo.iso2,
           id: country.countryInfo._id
         }))
         const sortedData = sortData(data);
-      
+        setMapCountries(data);
         setTableData(sortedData);
         setCountries(countries);
       })
@@ -60,8 +61,10 @@ function App() {
         await fetch(url)
             .then(response=>response.json())
             .then(data=>{
-              setMapCenter([data.countryInfo.lat,data.countryInfo.long]);
-              setMapZoom(4);
+              if (countryCode !== 'worldwide'){
+                setMapCenter([data.countryInfo.lat,data.countryInfo.long]);
+                setMapZoom(4);
+              }
               setCountry(countryCode);
               setCountryInfo(data);
             })
@@ -103,7 +106,7 @@ function App() {
         cases={countryInfo.todayDeaths} />
 
     </div>
-       <Map center={mapCenter} zoom={mapZoom} />
+       <Map countries={mapCountries} center={mapCenter} zoom={mapZoom} />
     </div>
     <Card className="app__right">
       <CardContent>
