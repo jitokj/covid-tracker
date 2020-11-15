@@ -1,5 +1,9 @@
 # COVID-19 TRACKER
 
+## App live demo
+
+https://covid-19-tracker-c0857.web.app/
+
 ## disease.sh api
 
 ### wireframe of covid-19 app
