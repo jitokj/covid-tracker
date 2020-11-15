@@ -46,7 +46,7 @@ const options ={
     }
 }
 
-const LineGraph = ({casesType="cases"}) => {
+const LineGraph = ({casesType="cases",...props}) => {
     const [data,setData] = useState({});
 
     useEffect(()=>{
@@ -76,7 +76,7 @@ const LineGraph = ({casesType="cases"}) => {
         return chartData;
     }
     return (
-        <div>
+        <div className={props.className}>
         {data?.length > 0 && (
             <Line options={options} data={{datasets: [{
             backgroundColor:"rgba(204,16.52,0.5)",

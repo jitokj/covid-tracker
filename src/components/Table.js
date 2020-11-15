@@ -1,5 +1,6 @@
 import React from 'react';
 import "./Table.css";
+import numeral from "numeral";
 
 const Table = ({countries}) => {
     // console.log(countries);
@@ -11,7 +12,7 @@ const Table = ({countries}) => {
               
                 <tr key={countryInfo._id === null ? Math.random(3) : countryInfo._id}>
                     <td>{country}</td>
-                    <td><strong>{cases}</strong></td>
+                    <td><strong>{numeral(cases).format("0,0")}</strong></td>
                 </tr>
                 
             ))}
